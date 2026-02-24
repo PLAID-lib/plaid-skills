@@ -10,7 +10,7 @@ Please optimize for scientific correctness and explicit semantics, not for gener
 
 When adding a new conversion example:
 
-- [ ] Add one script per dataset under `skills/examples/conversions/`.
+- [ ] Add one script per dataset under `skills/plaid-conversion/examples/conversions/`.
 - [ ] Include a module docstring with: dataset name, purpose, and key semantics.
 - [ ] Keep all dataset assumptions explicit (paths, metadata, split logic, field locations).
 - [ ] Define `infos` metadata (`legal`, `data_production`) with data source/license.
@@ -19,7 +19,7 @@ When adding a new conversion example:
 - [ ] Keep external dependencies local to the script; do not expand repo-wide deps for one dataset.
 - [ ] Use placeholder assertions for required local paths/repo IDs.
 - [ ] Validate on a small subset before full conversion.
-- [ ] If you introduce a recurring semantic pattern, add/update a file in `skills/patterns/`.
+- [ ] If you introduce a recurring semantic pattern, add/update a file in `skills/plaid-conversion/examples/patterns/`.
 
 ---
 
@@ -43,4 +43,4 @@ When adding a new conversion example:
 
 ## Starter scaffold
 
-Use [`skills/examples/conversions/_template.py`](./skills/examples/conversions/_template.py) as a starting point.
+Use [`skills/plaid-conversion/examples/conversions/_template.py`](./skills/plaid-conversion/examples/conversions/_template.py) as a starting point.

@@ -116,7 +116,7 @@ What would be most helpful?
 
 Once you've filled this out, the assistant can:
 1. Point you to the most relevant conversion example
-2. Identify applicable patterns from `patterns/`
+2. Identify applicable patterns from `examples/patterns/`
 3. Explain key decisions for your specific dataset
 4. Guide you through the conversion process step by step
 

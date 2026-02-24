@@ -1,3 +1,8 @@
+---
+name: plaid-conversion
+description: This skill helps users convert scientific datasets to the PLAID format. It provides practical conversion knowledge through real-world examples, documented patterns, and explicit guidance on handling diverse dataset structures.
+---
+
 # PLAID Dataset Conversion Skill
 
 ## Overview
@@ -27,7 +32,7 @@ This skill helps users convert scientific datasets to the PLAID format. It provi
    - Coverage of static/temporal, structured/unstructured, nodal/cell-centered data
    - Dataset-specific implementations that prioritize correctness over generality
 
-2. **Pattern Documentation** (`patterns/`)
+2. **Pattern Documentation** (`examples/patterns/`)
    - Recurring semantic choices in dataset conversion
    - Guidance on temporal structure, field locations, trajectory grouping
    - Cross-references to example implementations
@@ -47,7 +52,7 @@ When helping with conversions, follow this priority order:
    - These are authoritative for how PLAID is used in practice
    - Real scripts used to generate published datasets
 
-2. **Pattern descriptions in `patterns/`**
+2. **Pattern descriptions in `examples/patterns/`**
    - Document recurring structures and semantics
    - Extracted from actual conversion experience
 
@@ -92,7 +97,7 @@ When helping with conversions, follow this priority order:
    - Structured or unstructured mesh?
    - Nodal or cell-centered fields?
 
-2. **Read relevant patterns** in `patterns/`
+2. **Read relevant patterns** in `examples/patterns/`
    - `static_vs_temporal_samples.md` - Independent states vs time evolution
    - `trajectory_datasets.md` - One sample per physical trajectory
    - `external_time_metadata.md` - Deriving time from sidecar files

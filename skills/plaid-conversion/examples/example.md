@@ -129,7 +129,7 @@ See `examples/conversions/force_asr.py`, particularly:
 
 This depends on how your simulation **stores** the data, not on what might be more convenient.
 
-**From `patterns/nodal_vs_cell_fields.md`:**
+**From `examples/patterns/nodal_vs_cell_fields.md`:**
 
 - **Nodal fields**: Values defined at mesh vertices
   - Common in FEM simulations

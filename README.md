@@ -16,7 +16,7 @@ The goal is to help users and tools understand *how PLAID is used in practice* f
 
 If you are new to this repo, use this minimal path:
 
-1. Open [`skills/examples/conversions/README.md`](./skills/examples/conversions/README.md).
+1. Open [`skills/plaid-conversion/examples/conversions/README.md`](./skills/plaid-conversion/examples/conversions/README.md).
 2. Pick the script closest to your dataset (static/temporal, structured/unstructured, nodal/cell-centered).
 3. Check required external dependencies and raw-data source for that script.
 4. Set all placeholder paths/repo IDs (look for assertions on `/path/to/...` and `channel/repo`).
@@ -25,7 +25,7 @@ If you are new to this repo, use this minimal path:
 For contribution rules and a starter scaffold, see:
 
 - [`CONTRIBUTING_CONVERSIONS.md`](./CONTRIBUTING_CONVERSIONS.md)
-- [`skills/examples/conversions/_template.py`](./skills/examples/conversions/_template.py)
+- [`skills/plaid-conversion/examples/conversions/_template.py`](./skills/plaid-conversion/examples/conversions/_template.py)
 
 ---
 
@@ -33,22 +33,29 @@ For contribution rules and a starter scaffold, see:
 
 ```text
 .
-├── AGENT.md
 ├── LICENSE
-└── skills
-    ├── examples
-    │   └── conversions
-    │       ├── README.md
-    │       ├── drivaerml.py
-    │       ├── force_asr.py
-    │       ├── pdebench_2d_darcy_flow.py
-    │       ├── shapenetcar.py
-    │       └── thewell_turbulent_layer_2d.py
-    └── patterns
-        ├── external_time_metadata.md
-        ├── nodal_vs_cell_fields.md
-        ├── static_vs_temporal_samples.md
-        └── trajectory_datasets.md
+├── README.md
+├── CONTRIBUTING_CONVERSIONS.md
+└── skills/
+    └── plaid-conversion/              # Main skill directory
+        ├── SKILL.md                   # Skill entrypoint (required)
+        ├── docs/
+        │   └── template.md            # Template for guided assistance
+        └── examples/
+            ├── example.md             # Example skill usage
+            ├── conversions/
+            │   ├── README.md
+            │   ├── _template.py
+            │   ├── drivaerml.py
+            │   ├── force_asr.py
+            │   ├── pdebench_2d_darcy_flow.py
+            │   ├── shapenetcar.py
+            │   └── thewell_turbulent_layer_2d.py
+            └── patterns/
+                ├── external_time_metadata.md
+                ├── nodal_vs_cell_fields.md
+                ├── static_vs_temporal_samples.md
+                └── trajectory_datasets.md
 ```
 
 ---
@@ -73,10 +80,10 @@ Most scripts are intentionally explicit and dataset-specific.
 
 ## Authority and reading order
 
-As defined in `AGENT.md`, interpretation priority is:
+As defined in `skills/plaid-conversion/SKILL.md`, interpretation priority is:
 
-1. **Conversion examples** in `skills/examples/conversions/` (authoritative in practice)
-2. **Pattern documents** in `skills/patterns/`
+1. **Conversion examples** in `skills/plaid-conversion/examples/conversions/` (authoritative in practice)
+2. **Pattern documents** in `skills/plaid-conversion/examples/patterns/`
 3. Conceptual PLAID docs
 4. Source-level API details
 
@@ -86,7 +93,7 @@ If conceptual docs and examples differ, examples win for practical conversion be
 
 ## Conversion examples included
 
-The scripts in `skills/examples/conversions/` cover multiple dataset families and semantics:
+The scripts in `skills/plaid-conversion/examples/conversions/` cover multiple dataset families and semantics:
 
 - **DrivAerML** (`drivaerml.py`)
   - Steady-state automotive CFD
@@ -121,7 +128,7 @@ The scripts in `skills/examples/conversions/` cover multiple dataset families an
 
 ## Patterns documented
 
-Pattern notes in `skills/patterns/` summarize recurring semantics and pitfalls:
+Pattern notes in `skills/plaid-conversion/examples/patterns/` summarize recurring semantics and pitfalls:
 
 - `static_vs_temporal_samples.md` — when to model independent states vs time evolution
 - `trajectory_datasets.md` — one sample per physical trajectory
@@ -168,12 +175,17 @@ Check imports at the top of each conversion script before running it.
 
 ## Guidance for assistant/tool authors
 
-If you build an assistant around this repo, align behavior with `AGENT.md`:
+If you build an assistant around this repo, align behavior with `skills/plaid-conversion/SKILL.md`:
 
 - Prefer explaining existing patterns over auto-generating full conversions.
 - Do not invent PLAID APIs or hide uncertain assumptions.
 - Keep scientific semantics intact; avoid style-driven refactors.
 - Treat conversion scripts as dataset-specific artifacts, not generalized templates.
+
+For detailed guidance, see:
+- [`skills/plaid-conversion/SKILL.md`](./skills/plaid-conversion/SKILL.md) - Main skill instructions
+- [`skills/plaid-conversion/examples/example.md`](./skills/plaid-conversion/examples/example.md) - Example interactions
+- [`skills/plaid-conversion/docs/template.md`](./skills/plaid-conversion/docs/template.md) - User guidance template
 
 ---
 
@@ -181,7 +193,7 @@ If you build an assistant around this repo, align behavior with `AGENT.md`:
 
 When adding a new conversion skill:
 
-- Add one script per dataset in `skills/examples/conversions/`.
+- Add one script per dataset in `skills/plaid-conversion/examples/conversions/`.
 - Keep dataset assumptions explicit in code.
 - Avoid introducing PLAID APIs for one-off needs.
 - Preserve scientific meaning over normalization of code style.
@@ -194,7 +206,7 @@ Optional but encouraged:
 Before opening a PR, review:
 
 - [`CONTRIBUTING_CONVERSIONS.md`](./CONTRIBUTING_CONVERSIONS.md)
-- [`skills/examples/conversions/_template.py`](./skills/examples/conversions/_template.py)
+- [`skills/plaid-conversion/examples/conversions/_template.py`](./skills/plaid-conversion/examples/conversions/_template.py)
 
 ---
 

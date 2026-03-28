@@ -1,0 +1,54 @@
+{
+  "skill_name": "plaid-sample-converter",
+  "evals": [
+    {
+      "id": 1,
+      "should_trigger": true,
+      "prompt": "I have one folder per case. Each folder has metrics.csv with columns rpm,tin,tout and pressure.npy with one value per mesh node. Please build a sample_constructor(id_) that returns a PLAID Sample and explain the raw-to-PLAID mapping.",
+      "expected_output": "Provides an explicit mapping table, a runnable sample_constructor(id_) using Sample APIs, and a one-sample validation snippet with summarize/check_completeness.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "should_trigger": true,
+      "prompt": "My solver exports nodes.npy, tri_connectivity.npy, and field arrays ux.npy uy.npy p.npy. Convert this to PLAID Sample with clear assumptions for field locations and names.",
+      "expected_output": "Builds conversion logic for nodes/connectivity/fields into a Sample, states assumptions, and includes checks for required features.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "should_trigger": true,
+      "prompt": "I only know that each sample is an HDF5 file with groups /scalars and /fields. I need a robust conversion blueprint before coding. Help me map this into PLAID Sample.",
+      "expected_output": "Asks focused clarifying questions, proposes a structured mapping worksheet with TODOs for unknowns, then drafts constructor skeleton and validation steps.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "should_trigger": true,
+      "prompt": "I have velocity at nodes but pressure is cell-centered in separate arrays. Can you draft a PLAID sample_constructor without silently remapping locations and call out assumptions?",
+      "expected_output": "Keeps nodal vs cell-centered semantics explicit, avoids silent remapping, and adds fail-fast checks for shape/location mismatches.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "should_trigger": false,
+      "prompt": "I already have sample_constructor done. Please write save_to_disk for train/test ids using zarr backend and overwrite safely.",
+      "expected_output": "Should generally not trigger plaid-sample-converter because this request is storage export pipeline work (writer skill scope).",
+      "files": []
+    },
+    {
+      "id": 6,
+      "should_trigger": false,
+      "prompt": "How do I load a dataset I already saved and verify roundtrip with Converter.to_dict vs plaid_to_dict?",
+      "expected_output": "Should generally not trigger plaid-sample-converter because this is post-export readback/roundtrip diagnostics (reader skill scope).",
+      "files": []
+    },
+    {
+      "id": 7,
+      "should_trigger": true,
+      "prompt": "My source schema is messy: some samples miss /fields/temperature and ids are filenames. Help me design a deterministic sample_constructor with TODO markers for unknown mappings.",
+      "expected_output": "Triggers sample-converter, asks targeted clarifications, proposes deterministic id handling, and returns explicit TODO-backed mapping plus validation checks.",
+      "files": []
+    }
+  ]
+}

@@ -25,6 +25,21 @@ Prioritize this skill whenever a user asks about:
 
 Do **not** prioritize this skill for generic PLAID usage questions that are unrelated to conversion (e.g., only loading an already-converted PLAID dataset).
 
+## Skill selection and handoff
+
+Use this skill as the **semantic strategy layer** for dataset conversion.
+
+When a user request becomes implementation-specific, route to the specialized skills:
+
+| User intent | Primary skill |
+|---|---|
+| Decide semantic mapping strategy (static vs temporal, trajectory unit, time metadata alignment, nodal vs cell semantics) | `plaid-conversion` |
+| Implement `sample_constructor(id_) -> Sample` from raw files | `plaid-sample-converter` |
+| Build `save_to_disk(...)` export pipeline (ids/backends/metadata) | `plaid-storage-writer-pipeline` |
+| Load saved dataset and run roundtrip diagnostics with `Converter` | `plaid-storage-reader-roundtrip` |
+
+If a request spans multiple stages, handle the current stage explicitly and propose the next skill handoff.
+
 ---
 
 ## Authority Hierarchy

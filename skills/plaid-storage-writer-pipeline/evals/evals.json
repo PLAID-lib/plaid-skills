@@ -1,0 +1,54 @@
+{
+  "skill_name": "plaid-storage-writer-pipeline",
+  "evals": [
+    {
+      "id": 1,
+      "should_trigger": true,
+      "prompt": "I already have sample_constructor(id_) and train/test id lists. Generate a complete save_to_disk script for hf_datasets backend, including minimal infos metadata and a smoke-test approach.",
+      "expected_output": "Returns runnable save_to_disk pipeline script with explicit ids, backend config, infos block, and a small first-run verification approach.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "should_trigger": true,
+      "prompt": "Please produce a zarr export pipeline with num_proc=8 and safe overwrite handling. Mention common errors to avoid.",
+      "expected_output": "Configures backend=zarr and parallel workers, includes overwrite guidance, and warns about ids type/constructor failures.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "should_trigger": true,
+      "prompt": "I need to save only a pilot subset first, then full dataset once checks pass. Build this workflow using save_to_disk.",
+      "expected_output": "Provides two-phase save strategy (pilot subset then full run) with clear commands/config snippets.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "should_trigger": true,
+      "prompt": "My split ids are currently Python sets and one generator. Can you make a save_to_disk plan that fails fast and shows how to coerce to deterministic sliceable lists before writing?",
+      "expected_output": "Triggers writer skill, validates ids types early, proposes deterministic coercion, and keeps split semantics explicit before export.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "should_trigger": false,
+      "prompt": "I have raw HDF5 files and need help mapping /scalars and /fields into a sample_constructor(id_) first.",
+      "expected_output": "Should generally not trigger writer skill because this is raw data to Sample construction (sample-converter scope).",
+      "files": []
+    },
+    {
+      "id": 6,
+      "should_trigger": false,
+      "prompt": "I already exported my dataset. Show me how to load from disk and debug missing pressure path with Converter diagnostics.",
+      "expected_output": "Should generally not trigger writer skill because this is post-export readback/roundtrip debugging (reader skill scope).",
+      "files": []
+    },
+    {
+      "id": 7,
+      "should_trigger": true,
+      "prompt": "I need cgns backend export for train/val/test with conservative defaults first, then scale workers later. Can you generate the full save_to_disk script and smoke run plan?",
+      "expected_output": "Triggers writer skill and returns backend-specific save script, explicit splits, conservative-first execution plan, and scaling guidance.",
+      "files": []
+    }
+  ]
+}

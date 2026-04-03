@@ -1,0 +1,61 @@
+{
+  "skill_name": "plaid-conversion",
+  "evals": [
+    {
+      "id": 1,
+      "should_trigger": true,
+      "prompt": "I have a folder of VTK files from a turbulence simulation and a .pvd file with time values. How should I structure this as PLAID samples without losing temporal meaning?",
+      "expected_output": "Should trigger plaid-conversion, route to force_asr/thewell examples, and explain one-sample-per-trajectory plus external time metadata alignment.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "should_trigger": true,
+      "prompt": "Can you help me adapt a PLAID conversion script for a finite-volume dataset where pressure is stored per cell? I am not sure if I should convert values to nodes.",
+      "expected_output": "Should trigger plaid-conversion and explicitly preserve cell-centered semantics instead of remapping to nodal fields for convenience.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "should_trigger": true,
+      "prompt": "I need to convert a static mesh dataset (one geometry per sample, no time) to PLAID. Which reference script in this repo should I start from?",
+      "expected_output": "Should trigger plaid-conversion and route to static examples (e.g., shapenetcar or pdebench/drivaerml depending on mesh type) with adaptation guidance.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "should_trigger": true,
+      "prompt": "My dataset has trajectories where each run has 200 time steps in separate files plus CSV metadata for parameters. Help me design the Sample/add_tree layout for PLAID.",
+      "expected_output": "Should trigger plaid-conversion and explain trajectory grouping, time handling, and explicit mapping of constants/fields.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "should_trigger": false,
+      "prompt": "How do I load an already-converted PLAID dataset and iterate batches for training in PyTorch?",
+      "expected_output": "Should generally not trigger plaid-conversion because this is usage/training workflow, not conversion guidance.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "should_trigger": false,
+      "prompt": "Please summarize the BSD 3-Clause license terms in this repository.",
+      "expected_output": "Should not trigger plaid-conversion; this is legal/documentation summarization.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "should_trigger": false,
+      "prompt": "I need a faster matplotlib style for publication plots and consistent fonts across figures.",
+      "expected_output": "Should not trigger plaid-conversion; this is plotting/style guidance unrelated to PLAID conversion semantics.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "should_trigger": false,
+      "prompt": "Can you refactor this Python module into classes and add type hints everywhere?",
+      "expected_output": "Should not trigger plaid-conversion unless the code is explicitly a PLAID conversion script and the user asks conversion-specific questions.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "skill_name": "plaid-storage-reader-roundtrip",
+  "evals": [
+    {
+      "id": 1,
+      "should_trigger": true,
+      "prompt": "I saved a dataset to disk with save_to_disk. Show me how to use init_from_disk and Converter.to_plaid to verify that pressure and temperature fields are present in the train split.",
+      "expected_output": "Provides a runnable read/validation script using init_from_disk and Converter, with explicit checks for required fields and clear pass/fail criteria.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "should_trigger": true,
+      "prompt": "My restored samples look inconsistent. Build a roundtrip diagnostic that compares converter.to_dict(...) and converter.plaid_to_dict(...).",
+      "expected_output": "Constructs focused diagnostics to compare dictionary representations, identifies mismatch categories, and recommends concrete fixes.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "should_trigger": true,
+      "prompt": "Can you help me debug missing feature paths after loading from disk? I want a script that fails fast and tells me exactly what is missing.",
+      "expected_output": "Returns fail-fast checks over a small sample subset, explicit missing-path errors, and next-step troubleshooting guidance.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "should_trigger": true,
+      "prompt": "I only have local_dir and suspect split mismatch (train vs training). Please write a minimal init_from_disk diagnostic that classifies storage layout errors vs mapping errors.",
+      "expected_output": "Triggers reader skill, performs deterministic small-subset checks, and reports triage class (layout/read vs mapping vs roundtrip mismatch).",
+      "files": []
+    },
+    {
+      "id": 5,
+      "should_trigger": false,
+      "prompt": "Can you generate save_to_disk code for my train/test ids and choose between hf_datasets and zarr?",
+      "expected_output": "Should generally not trigger reader skill because this is export pipeline authoring (writer skill scope).",
+      "files": []
+    },
+    {
+      "id": 6,
+      "should_trigger": false,
+      "prompt": "Before any storage step, help me map raw solver arrays into sample_constructor(id_) and define field locations.",
+      "expected_output": "Should generally not trigger reader skill because this is raw-to-Sample conversion work (sample-converter scope).",
+      "files": []
+    },
+    {
+      "id": 7,
+      "should_trigger": true,
+      "prompt": "After export, my converter.to_plaid works for some ids but fails for others. I need a fail-fast script that pinpoints first failing index and prints actionable next fixes.",
+      "expected_output": "Triggers reader skill and returns deterministic fail-fast diagnostics with first-failure reporting and concrete remediation guidance.",
+      "files": []
+    }
+  ]
+}

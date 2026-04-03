@@ -1,46 +1,44 @@
 ---
 name: plaid-conversion
-description: This skill helps users convert scientific datasets to the PLAID format. It provides practical conversion knowledge through real-world examples, documented patterns, and explicit guidance on handling diverse dataset structures.
+description: Practical guidance for converting scientific datasets to PLAID using real conversion scripts and pattern docs. Use this skill whenever users mention adapting a dataset to PLAID, choosing static vs temporal sample semantics, handling trajectories or external time metadata, mapping nodal vs cell-centered fields, or debugging PLAID conversion logic—even if they do not explicitly ask for this skill by name.
 ---
 
 # PLAID Dataset Conversion Skill
 
-## Overview
+## Purpose
 
-This skill helps users convert scientific datasets to the PLAID format. It provides practical conversion knowledge through real-world examples, documented patterns, and explicit guidance on handling diverse dataset structures.
+Help users convert heterogeneous scientific datasets to PLAID **without losing scientific semantics**.
 
----
+This skill is primarily a **guided reference**: it points to proven conversion scripts and recurring patterns, then helps users adapt those patterns to their own datasets.
 
-## Skill Purpose
+## Use This Skill When
 
-**Primary Goal**: Assist users in converting heterogeneous scientific datasets to PLAID format while preserving scientific semantics.
+Prioritize this skill whenever a user asks about:
 
-**Target Users**:
-- Researchers converting their datasets to PLAID
-- Data engineers working with scientific simulations
-- ML practitioners preparing physics-based datasets
-- Tool developers building PLAID conversion pipelines
+- converting a dataset to PLAID,
+- adapting or debugging a PLAID conversion script,
+- static vs temporal sample structure,
+- one-sample-per-trajectory semantics,
+- deriving time values from external metadata (`.pvd`, XML, CSV),
+- nodal vs cell-centered field mapping,
+- preserving scientific meaning while restructuring data.
 
----
+Do **not** prioritize this skill for generic PLAID usage questions that are unrelated to conversion (e.g., only loading an already-converted PLAID dataset).
 
-## Core Capabilities
+## Skill selection and handoff
 
-### What This Skill Provides
+Use this skill as the **semantic strategy layer** for dataset conversion.
 
-1. **Working Conversion Examples** (`examples/conversions/`)
-   - Real, production-tested conversion scripts for diverse datasets
-   - Coverage of static/temporal, structured/unstructured, nodal/cell-centered data
-   - Dataset-specific implementations that prioritize correctness over generality
+When a user request becomes implementation-specific, route to the specialized skills:
 
-2. **Pattern Documentation** (`examples/patterns/`)
-   - Recurring semantic choices in dataset conversion
-   - Guidance on temporal structure, field locations, trajectory grouping
-   - Cross-references to example implementations
+| User intent | Primary skill |
+|---|---|
+| Decide semantic mapping strategy (static vs temporal, trajectory unit, time metadata alignment, nodal vs cell semantics) | `plaid-conversion` |
+| Implement `sample_constructor(id_) -> Sample` from raw files | `plaid-sample-converter` |
+| Build `save_to_disk(...)` export pipeline (ids/backends/metadata) | `plaid-storage-writer-pipeline` |
+| Load saved dataset and run roundtrip diagnostics with `Converter` | `plaid-storage-reader-roundtrip` |
 
-3. **Conversion Guidance**
-   - How to choose the right conversion approach
-   - Common pitfalls and design decisions
-   - Authority hierarchy for resolving conflicts
+If a request spans multiple stages, handle the current stage explicitly and propose the next skill handoff.
 
 ---
 
@@ -67,52 +65,52 @@ When helping with conversions, follow this priority order:
 
 ---
 
-## Key Principles
+## Operating Principles
 
-### What Makes PLAID Conversions Unique
+1. **Dataset-specific by design**
+   - Conversion scripts should encode domain assumptions explicitly.
+   - Do not force generic abstractions when they hide scientific meaning.
 
-1. **Dataset-Specific by Design**
-   - Conversion scripts encode domain knowledge explicitly
-   - Not intended to be generic or fully reusable
-   - Preserve scientific semantics over code uniformity
+2. **Explicit assumptions**
+   - State uncertain assumptions directly.
+   - Keep semantics visible in code and explanations (time, field location, sample unit).
 
-2. **Explicit Over Implicit**
-   - Make assumptions visible in code
-   - Document non-obvious semantic choices
-   - Avoid hiding complexity in abstractions
+3. **Correctness over convenience**
+   - Never silently alter scientific meaning.
+   - Preserve temporal structure, trajectory grouping, and nodal/element semantics.
 
-3. **Correctness Over Convenience**
-   - Preserve temporal structure, field locations, trajectory grouping
-   - Never silently change scientific meaning
-   - Validate on small subsets before full conversion
+4. **Incremental validation**
+   - Validate on a small subset first.
+   - Scale only after semantic correctness is confirmed.
 
 ---
 
-## How to Use This Skill
+## Response Workflow
 
-### For Converting Your Dataset
+When this skill triggers, follow this sequence:
 
-1. **Find the closest example** in `examples/conversions/`
-   - Static or temporal?
-   - Structured or unstructured mesh?
-   - Nodal or cell-centered fields?
+1. **Classify dataset semantics**
+   - Static vs temporal
+   - Structured vs unstructured support
+   - Nodal vs cell-centered fields
+   - Per-sample unit (configuration, trajectory, parameter setting)
 
-2. **Read relevant patterns** in `examples/patterns/`
-   - `static_vs_temporal_samples.md` - Independent states vs time evolution
-   - `trajectory_datasets.md` - One sample per physical trajectory
-   - `external_time_metadata.md` - Deriving time from sidecar files
-   - `nodal_vs_cell_fields.md` - Preserving field location semantics
+2. **Route to closest conversion example** in `examples/conversions/`
 
-3. **Adapt to your dataset**
-   - Update paths and data sources
-   - Modify mesh/tree construction
-   - Adjust metadata mapping
-   - Keep semantic choices explicit
+3. **Pull matching pattern docs** in `examples/patterns/`
+   - `static_vs_temporal_samples.md`
+   - `trajectory_datasets.md`
+   - `external_time_metadata.md`
+   - `nodal_vs_cell_fields.md`
 
-4. **Validate incrementally**
-   - Test on a small subset first
-   - Verify scientific correctness
-   - Scale up only after validation
+4. **Provide adaptation guidance**
+   - Explicit assumptions
+   - Likely pitfalls
+   - Suggested structure for mesh/tree/feature mapping
+
+5. **Recommend validation steps**
+   - Small subset run
+   - Semantic checks before full conversion
 
 ### Quick Reference Map
 
@@ -127,19 +125,21 @@ When helping with conversions, follow this priority order:
 
 ## Assistant Behavior Guidelines
 
-### Do:
-- **Explain patterns** from existing examples rather than generating full scripts
-- **Point to relevant examples** that match user's dataset characteristics
-- **State assumptions explicitly** when inferring dataset semantics
-- **Highlight common pitfalls** documented in patterns
-- **Respect scientific semantics** in all suggestions
+### Preferred behaviors
 
-### Don't:
-- **Auto-generate full conversion scripts** without understanding the dataset
-- **Invent PLAID APIs** or abstractions not in the codebase
-- **Hide uncertainty** or guess missing semantics
-- **Suggest refactors** that alter scientific meaning
-- **Treat scripts as generic templates** - they are dataset-specific
+- Explain and reuse proven patterns from existing examples.
+- Point to specific files/sections that match the user's dataset shape.
+- Keep assumptions explicit, especially where metadata is missing.
+- Surface pitfalls early (sample unit mismatch, time alignment, field location drift).
+- Keep recommendations faithful to scientific semantics.
+
+### Avoid
+
+- Auto-generating full conversion pipelines from vague prompts.
+- Inventing PLAID APIs, wrappers, or abstractions not grounded in repo examples.
+- Guessing unstated scientific semantics.
+- Refactors that optimize style while changing meaning.
+- Presenting scripts as plug-and-play templates.
 
 ### Advisory, Not Automatic
 
@@ -165,36 +165,25 @@ Each example includes:
 
 ---
 
-## Common Conversion Patterns
+## High-Value Pattern Checks
 
-### Static vs Temporal Samples
+Use these checks proactively when reviewing a user request or script:
 
-**Static**: One `Sample` = one independent configuration
-- No time loop
-- Single `sample.add_tree()` call
-- Examples: `shapenetcar.py`, `pdebench_2d_darcy_flow.py`
+### 1) Static vs Temporal sample semantics
 
-**Temporal**: One `Sample` = one physical trajectory
-- Loop over time steps
-- Multiple `sample.add_tree(time=...)` calls
-- Examples: `force_asr.py`, `thewell_turbulent_layer_2d.py`
+- **Static**: one `Sample` per independent state; usually one `add_tree` call.
+- **Temporal**: one `Sample` per trajectory; multiple `add_tree(time=...)` calls.
 
-### Field Location Semantics
+### 2) Field location semantics
 
-**Nodal fields**: Values defined at mesh vertices
-- Most common in structural and fluid simulations
-- Examples: `shapenetcar.py`, `force_asr.py`
+- **Nodal** fields live on vertices.
+- **Cell-centered** fields live on elements.
+- Do not remap location just for convenience.
 
-**Cell-centered fields**: Values defined on elements
-- Common in finite volume methods
-- Example: `pdebench_2d_darcy_flow.py`
+### 3) External temporal metadata alignment
 
-### External Metadata
-
-Some datasets require parsing external files for temporal structure:
-- PVD/XML files for time step information
-- CSV files for parameter values
-- Example: `force_asr.py` parses `.pvd` for time values
+- Confirm whether file index equals physical time (often false).
+- If sidecar metadata exists (`.pvd`, XML, CSV), parse and align explicitly.
 
 ---
 
@@ -210,26 +199,11 @@ Conversion scripts may require external libraries not in PLAID core:
 
 ---
 
-## When to Use This Skill
-
-✅ **Use when**:
-- Converting a scientific dataset to PLAID
-- Understanding PLAID conversion patterns
-- Debugging conversion scripts
-- Learning from real-world examples
-
-❌ **Don't use for**:
-- Generic PLAID tutorials (see main docs)
-- Loading/using existing PLAID datasets
-- Questions about PLAID core APIs
-
----
-
 ## Related Resources
 
 - **PLAID Documentation**: https://plaid-lib.readthedocs.io/en/stable/
 - **PLAID Source Code**: https://github.com/PLAID-lib/plaid
-- **Contributing Guide**: See `../CONTRIBUTING_CONVERSIONS.md`
+- **Contributing Guide**: See `../../CONTRIBUTING_CONVERSIONS.md`
 - **Conversion Template**: See `examples/conversions/_template.py`
 
 ---
